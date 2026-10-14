@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Application Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .input-transition {
+            transition: all 0.2s ease-in-out;
+        }
+        .input-transition:focus {
+            transform: translateY(-1px);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        /* Custom calendar icon accent color fix */
+        ::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: opacity(0.6);
+        }
+        ::-webkit-calendar-picker-indicator:hover {
+            filter: opacity(1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 min-h-screen py-8 px-4 flex items-center justify-center">
+
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden glass-card my-auto border border-slate-100/20">
+        
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 p-8 text-white text-center sm:text-left relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+            <span class="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-2">Enrollment Open</span>
+            <h1 class="text-3xl font-bold tracking-tight">Application Form</h1>
+            <p class="text-indigo-100 text-sm mt-1">Please complete all fields below to submit your course application.</p>
+        </div>
+
+        <!-- Success Message Container (Hidden by default) -->
+        <div id="successState" class="hidden p-8 sm:p-12 text-center">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Application Submitted!</h2>
+            <p class="text-slate-600 mb-6 max-w-md mx-auto">Thank you for applying. We have received your details and our admissions team will contact you shortly.</p>
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-left max-w-sm mx-auto mb-6 text-sm text-slate-700 space-y-1">
+                <p><strong>Applicant:</strong> <span id="summaryName"></span></p>
+                <p><strong>Email:</strong> <span id="summaryEmail"></span></p>
+                <p><strong>Program:</strong> <span id="summaryCourse"></span></p>
+            </div>
+            <button onclick="resetForm()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md transition duration-200">
+                Submit Another Application
+            </button>
+        </div>
+
+        <!-- Main Form -->
+        <form id="appForm" novalidate class="p-6 sm:p-8 space-y-6">
+            
+            <!-- Full Name -->
+            <div>
+                <label for="fullName" class="block text-sm font-semibold text-slate-700 mb-1">Full Name <span class="text-rose-500">*</span></label>
+                <input type="text" id="fullName" name="fullName" placeholder="Jane Doe" 
+                    class="input-transition w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-slate-800 placeholder-slate-400">
+                <p class="error-msg hidden text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Please enter your full name (at least 2 letters).</span>
+                </p>
+            </div>
+
+            <!-- Email & Phone Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Email Address -->
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-slate-700 mb-1">Email Address <span class="text-rose-500">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="jane@example.com" 
+                        class="input-transition w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-slate-800 placeholder-slate-400">
+                    <p class="error-msg hidden text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        <span>Please enter a valid email address.</span>
+                    </p>
+                </div>
+
+                <!-- Phone Number -->
+                <div>
+                    <label for="phone" class="block text-sm font-semibold text-slate-700 mb-1">Phone Number <span class="text-rose-500">*</span></label>
+                    <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" 
+                        class="input-transition w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-slate-800 placeholder-slate-400">
+                    <p class="error-msg hidden text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        <span>Please enter a valid phone number (min 10 digits).</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Date of Birth & Program Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Date of Birth -->
+                <div>
+                    <label for="dob" class="block text-sm font-semibold text-slate-700 mb-1">Date of Birth <span class="text-rose-500">*</span></label>
+                    <input type="date" id="dob" name="dob" 
+                        class="input-transition w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-slate-800">
+                    <p class="error-msg hidden text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        <span>You must be at least 16 years old to apply.</span>
+                    </p>
+                </div>
+
+                <!-- Program Selection -->
+                <div>
+                    <label for="course" class="block text-sm font-semibold text-slate-700 mb-1">Program / Course <span class="text-rose-500">*</span></label>
+                    <select id="course" name="course" 
+                        class="input-transition w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-slate-800 bg-white">
+                        <option value="">Select a Program</option>
+                        <option value="Full-Stack Web Development">Full-Stack Web Development</option>
+                        <option value="Data Science & AI">Data Science & AI</option>
+                        <option value="UX/UI Design Masterclass">UX/UI Design Masterclass</option>
+                        <option value="Cloud Computing & DevOps">Cloud Computing & DevOps</option>
+                        <option value="Cybersecurity Fundamentals">Cybersecurity Fundamentals</option>
+                    </select>
+                    <p class="error-msg hidden text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        <span>Please select a program/course.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Comments / Additional Info -->
+            <div>
+                <label for="comments" class="block text-sm font-semibold text-slate-700 mb-1">Comments / Additional Details <span class="text-xs text-slate-400 font-normal">(Optional)</span></label>
+                <textarea id="comments" name="comments" rows="4" placeholder="Tell us about your background or any questions you have..." 
+                    class="input-transition w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-slate-800 placeholder-slate-400 resize-none"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                class="w-full py-3.5 px-6 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold rounded-lg shadow-lg shadow-indigo-200 transition duration-200 flex items-center justify-center gap-2 group">
+                <span>Submit Application</span>
+                <svg class="w-5 h-5 transform group-hover:translate-x-1 transition duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <!-- JavaScript Validation -->
+    <script>
+        const form = document.getElementById('appForm');
+        const successState = document.getElementById('successState');
+
+        // Validation Regex Patterns
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+
+        // Fields to validate
+        const fields = {
+            fullName: {
+                element: document.getElementById('fullName'),
+                validate: value => value.trim().length >= 2
+            },
+            email: {
+                element: document.getElementById('email'),
+                validate: value => emailRegex.test(value.trim())
+            },
+            phone: {
+                element: document.getElementById('phone'),
+                validate: value => phoneRegex.test(value.trim())
+            },
+            dob: {
+                element: document.getElementById('dob'),
+                validate: value => {
+                    if (!value) return false;
+                    const birthDate = new Date(value);
+                    const today = new Date();
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    return age >= 16; // Minimum age threshold
+                }
+            },
+            course: {
+                element: document.getElementById('course'),
+                validate: value => value !== ""
+            }
+        };
+
+        // Real-time Validation Listener setup
+        Object.keys(fields).forEach(key => {
+            const field = fields[key];
+            const el = field.element;
+
+            ['input', 'change', 'blur'].forEach(eventType => {
+                el.addEventListener(eventType, () => {
+                    validateSingleField(key);
+                });
+            });
+        });
+
+        function validateSingleField(key) {
+            const field = fields[key];
+            const isValid = field.validate(field.element.value);
+            const errorMsg = field.element.parentElement.querySelector('.error-msg');
+
+            if (!isValid) {
+                field.element.classList.add('border-rose-500', 'focus:ring-rose-200');
+                field.element.classList.remove('border-slate-200', 'focus:ring-indigo-200');
+                if (errorMsg) errorMsg.classList.remove('hidden');
+            } else {
+                field.element.classList.remove('border-rose-500', 'focus:ring-rose-200');
+                field.element.classList.add('border-slate-200', 'focus:ring-indigo-200');
+                if (errorMsg) errorMsg.classList.add('hidden');
+            }
+            return isValid;
+        }
+
+        // Form Submit Handler
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let isFormValid = true;
+
+            // Validate all fields on submit
+            Object.keys(fields).forEach(key => {
+                const isValid = validateSingleField(key);
+                if (!isValid) {
+                    isFormValid = false;
+                }
+            });
+
+            if (isFormValid) {
+                // Populate summary info
+                document.getElementById('summaryName').innerText = fields.fullName.element.value.trim();
+                document.getElementById('summaryEmail').innerText = fields.email.element.value.trim();
+                document.getElementById('summaryCourse').innerText = fields.course.element.value;
+
+                // Show Success Message and hide Form
+                form.classList.add('hidden');
+                successState.classList.remove('hidden');
+            }
+        });
+
+        // Reset form function
+        function resetForm() {
+            form.reset();
+            
+            // Clear validation styling
+            Object.keys(fields).forEach(key => {
+                const field = fields[key];
+                const errorMsg = field.element.parentElement.querySelector('.error-msg');
+                field.element.classList.remove('border-rose-500', 'focus:ring-rose-200');
+                field.element.classList.add('border-slate-200', 'focus:ring-indigo-200');
+                if (errorMsg) errorMsg.classList.add('hidden');
+            });
+
+            successState.classList.add('hidden');
+            form.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
